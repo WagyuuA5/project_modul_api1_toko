@@ -57,6 +57,20 @@ class UserLogin {
     prefs.setString('user_token', token ?? '');
   }
 
+  Future getUserLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserLogin userLogin = UserLogin(
+      status: prefs.getBool("status"),
+      token: prefs.getString("token"),
+      message: prefs.getString("message"),
+      id: prefs.getInt("id"),
+      nama: prefs.getString("name"),
+      email: prefs.getString("email"),
+      role: prefs.getString("role"),
+    );
+    return userLogin;
+  }
+
   static Future<UserLogin?> getFromPrefs() async {
     try {
       final prefs = await SharedPreferences.getInstance();

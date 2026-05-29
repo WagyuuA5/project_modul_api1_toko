@@ -9,7 +9,7 @@ class UserService {
     try {
       print('Registering user with data: $data');
       
-      final uri = Uri.parse('$BaseUrl/auth/register');
+      final uri = Uri.parse('$baseUrl/auth/register');
       final response = await http.post(
         uri,
         body: data,
@@ -70,7 +70,7 @@ class UserService {
     try {
       print('Logging in with data: $data');
       
-      final uri = Uri.parse('$BaseUrl/auth/login');
+      final uri = Uri.parse('$baseUrl/auth/login');
       final response = await http.post(
         uri,
         body: data,
@@ -86,16 +86,7 @@ class UserService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         
         if (responseData['status'] == true) {
-          UserLogin userLogin = UserLogin(
-            nama: responseData['user']?['nama'] ?? 
-                  responseData['user']?['nama_user'] ?? 
-                  responseData['user']?['name'] ?? 
-                  responseData['data']?['name'] ?? '',
-            email: responseData['user']?['email'] ?? responseData['data']?['email'] ?? '',
-            role: responseData['user']?['role'] ?? responseData['data']?['role'] ?? 'user',
-          );
-
-          // Save to shared preferences
+          UserLogin userLogin = UserLogin.fromJson(responseData);
           await userLogin.saveToPrefs();
           print('User saved to preferences: ${userLogin.nama}');
           
